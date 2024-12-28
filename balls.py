@@ -11,7 +11,7 @@ WIDTH, HEIGHT = 1600, 900
 BALL_RADIUS = 20
 CIRCLE_RADIUS = 450
 CIRCLE_RADIUS_DECREMENT = 5
-GRAVITY = 1
+GRAVITY = 7
 BOUNCE_DELAY = 50  # Delay in milliseconds
 CIRCLE_THICKNESS = 5  # Increased thickness of the circle
 FIXED_TIME_STEP = 1 / 240  # Fixed time step for physics calculations
@@ -23,7 +23,7 @@ GREEN = (0, 255, 0)
 
 # Screen setup
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Bouncing Ball in a Circle")
+pygame.display.set_caption("Free Views")
 
 # Font setup
 font = pygame.font.SysFont(None, 36)
@@ -109,6 +109,10 @@ while running:
     fps = clock.get_fps()
     fps_text = font.render(f'FPS: {fps:.2f}', True, WHITE)
     screen.blit(fps_text, (10, 50))
+
+    # Render the circle radius text
+    radius_text = font.render(f'Radius: {CIRCLE_RADIUS}', True, WHITE)
+    screen.blit(radius_text, (10, 90))
 
     # Update the display
     pygame.display.flip()
