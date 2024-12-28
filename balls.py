@@ -9,9 +9,9 @@ pygame.init()
 # Constants
 WIDTH, HEIGHT = 1600, 900
 BALL_RADIUS = 20
-CIRCLE_RADIUS = 450
+INITIAL_CIRCLE_RADIUS = 450
 CIRCLE_RADIUS_DECREMENT = 5
-GRAVITY = 7
+GRAVITY = 8
 BOUNCE_DELAY = 50  # Delay in milliseconds
 CIRCLE_THICKNESS = 5  # Increased thickness of the circle
 FIXED_TIME_STEP = 1 / 240  # Fixed time step for physics calculations
@@ -23,21 +23,27 @@ GREEN = (0, 255, 0)
 
 # Screen setup
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Free Views")
+pygame.display.set_caption("Bouncing Ball in a Circle")
 
 # Font setup
 font = pygame.font.SysFont(None, 36)
 
-# Ball setup with random variance
-spawn_variance = 250
-ball_pos = [
-    WIDTH // 2 + random.randint(-spawn_variance, spawn_variance),
-    HEIGHT // 2 + random.randint(-spawn_variance, spawn_variance)
-]
-ball_speed = [2, 2]
+def reset_game():
+    global ball_pos, ball_speed, CIRCLE_RADIUS, last_bounce_time
+    # Ball setup with random variance
+    spawn_variance = 10
+    ball_pos = [
+        WIDTH // 2 + random.randint(-spawn_variance, spawn_variance),
+        HEIGHT // 2 + random.randint(-spawn_variance, spawn_variance)
+    ]
+    ball_speed = [2, 2]
+    CIRCLE_RADIUS = INITIAL_CIRCLE_RADIUS
+    last_bounce_time = pygame.time.get_ticks()
+
+# Initialize game state
+reset_game()
 
 # Timer setup
-last_bounce_time = pygame.time.get_ticks()
 clock = pygame.time.Clock()
 
 # Main loop
@@ -83,6 +89,10 @@ while running:
                 last_bounce_time = current_time
 
         accumulator -= FIXED_TIME_STEP
+
+    # Check if the circle radius has reached -50
+    if CIRCLE_RADIUS <= -50:
+        reset_game()
 
     # Calculate the ball's velocity
     velocity = math.sqrt(ball_speed[0] ** 2 + ball_speed[1] ** 2)
